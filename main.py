@@ -65,7 +65,7 @@ def main(datafile, model_name='mf'):
     
     train_losses, train_maes, test_losses, test_maes, best_test_loss, best_test_mae = engine(train_loader, test_loader, model, loss_fn, optimizer, config.epochs, config.device)
 
-    # top10product_ratings_user = get_product_ratings(df_test, model, reviewer2int, product2int, int2product)
+    top10product_ratings_user = get_product_ratings(df_test, model, reviewer2int, product2int, int2product)
 
 
     if model_name == 'mf':
