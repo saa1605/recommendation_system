@@ -13,7 +13,6 @@ def load_data_into_df(datafile):
         for l in f:
             data.append(json.loads(l.strip()))
 
-    print(len(data))
     df = pd.DataFrame(data)
     del data
     return df

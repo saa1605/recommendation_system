@@ -29,9 +29,9 @@ torch.cuda.manual_seed_all(hash("so runs are repeatable") % 2**32 - 1)
 datafile = 'Video_Games_5.json.gz'
 
 def print_metrics(test_ratings, test_predictions):
-    print(metrics.recall_score(np.rint(test_ratings), np.rint(test_predictions), average='macro'))
-    print(metrics.precision_score(np.rint(test_ratings), np.rint(test_predictions), average='macro'))
-    print(metrics.f1_score(np.rint(test_ratings), np.rint(test_predictions), average='macro'))
+    print('Recall: ', metrics.recall_score(np.rint(test_ratings), np.rint(test_predictions), average='macro'))
+    print('Precision: ', metrics.precision_score(np.rint(test_ratings), np.rint(test_predictions), average='macro'))
+    print('F1 Score: ', metrics.f1_score(np.rint(test_ratings), np.rint(test_predictions), average='macro'))
 
 def main(datafile, model_name='mf'):
     df = load_data_into_df(datafile)
@@ -65,14 +65,19 @@ def main(datafile, model_name='mf'):
     
     train_losses, train_maes, test_losses, test_maes, best_test_loss, best_test_mae = engine(train_loader, test_loader, model, loss_fn, optimizer, config.epochs, config.device)
 
-    top10product_ratings_user = get_product_ratings()
+    # top10product_ratings_user = get_product_ratings(df_test, model, reviewer2int, product2int, int2product)
 
 
     if model_name == 'mf':
         test_ratings = np.load('ratings_mf.npy')
-        test_predictions = np.load('best_predictions_mf')
+        test_predictions = np.load('best_predictions_mf.npy')
         print_metrics(test_ratings, test_predictions)
+        print('RMSE: ', best_test_loss)
+        print('MAE: ', best_test_mae)
     else:
         test_ratings = np.load('ratings_nn.npy')
         test_predictions = np.load('best_predictions_nn.npy')
         print_metrics(test_ratings, test_predictions) 
+
+
+main(datafile)
